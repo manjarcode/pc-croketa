@@ -4,7 +4,7 @@ import {sand} from "../textures/index"
 export function Ground() {
     const [ref] = usePlane(() => ({
         rotation: [-Math.PI/2, 0, 0],
-        position: [0, -1, 0]
+        position: [0, 0, 0]
     }))
 
 
