@@ -1,7 +1,17 @@
 import { useSphere } from "@react-three/cannon"
 import { useFrame, useThree } from "@react-three/fiber"
 import { useEffect, useRef } from "react"
-import { Vector3 } from "three"
+import { Euler, Vector3 } from "three"
+
+function cameraPosition(camera, position, rotation) {
+    const camPosition = new Vector3(0, 3, 8)
+
+    const camRotation = new Euler(...rotation)
+    camPosition.add(new Vector3(...position))
+
+    camera.position.copy(camPosition)
+    camera.rotation.copy(camRotation)
+}
 
 export default function Player() {
     const {camera} = useThree()
@@ -27,17 +37,22 @@ export default function Player() {
         })
     }, [api.velocity])
 
-    useFrame(() => {
-        // camera.position.copy(new Vector3(...position.current))
-        camera.position.copy(new Vector3(0,10,0))
-        const forward = new Vector3(0, 0, -1)
-
-        forward.multiplyScalar(2).applyEuler(camera.rotation)
-
-        api.velocity.set(...forward)
-        
+    const rotation = useRef([0,0,0])
+    useEffect(() => {
+        api.rotation.subscribe(r => {
+            rotation.current = r
+        })
     })
 
+    useFrame(() => {
+        cameraPosition(camera, position.current, rotation.current)
+
+        if (position.current[1] === 0)
+        {
+            const forward = new Vector3(0, 0, -1)
+            api.velocity.set(...forward)
+        }
+    })
 
     return(
         <mesh ref={ref}>
