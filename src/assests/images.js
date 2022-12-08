@@ -1,5 +1,2 @@
-import sand from './images/sand.jpg'
-
-
-export default sand
-console.log('sand', sand)
+export {default as sandImg} from './images/sand.jpg'
+export {default as ballImg} from './images/ball.jpg'

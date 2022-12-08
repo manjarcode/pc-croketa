@@ -1,8 +1,15 @@
 import { RepeatWrapping, TextureLoader } from "three"
-import {default as sandImage } from "../assests/images.js"
+import {sandImg, ballImg } from "../assests/images.js"
 
 const textureLoader = new TextureLoader()
-export const sand = textureLoader.load(sandImage)
-sand.wrapS = RepeatWrapping
-sand.wrapT = RepeatWrapping
-sand.repeat.set(64, 64)
+
+function setupTexture(image, width, height) {
+    const texture = textureLoader.load(image)
+    texture.wrapS = RepeatWrapping
+    texture.wrapT = RepeatWrapping
+    texture.repeat.set(width, height)
+    return texture
+}
+
+export const sand = setupTexture(sandImg, 64, 64)
+export const ball = setupTexture(ballImg, 512, 512)
